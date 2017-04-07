@@ -31,6 +31,11 @@
  */
 package cube3d;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -41,7 +46,12 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Box;
+import javafx.scene.shape.CullFace;
+import javafx.scene.shape.DrawMode;
 import javafx.scene.shape.RectangleBuilder;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
@@ -90,6 +100,31 @@ public class Cube3D extends Application {
         c3.rx.setAngle(45);
         c3.ry.setAngle(45);
 
+        // 建立3D方塊
+        Box box3;
+        box3 = new Box(100, 100, 100);
+        // 設定省略描繪Back Face
+        box3.setCullFace(CullFace.BACK);
+        // 設定以填滿的方式繪製3D方塊
+        box3.setDrawMode(DrawMode.FILL);
+        FileInputStream is = null;
+        try {
+            
+            is=new FileInputStream(new File("D:\\opencl.png"));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Cube3D.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Image image = new Image(is);
+        // 設定Phong Material
+        PhongMaterial material2 = new PhongMaterial();
+        // 設定漫射貼圖 
+        material2.setDiffuseMap(image);
+        // 設定物體表面的材質
+        box3.setMaterial(material2);
+        box3.setLayoutX(350);
+        box3.setLayoutY(300);
+        
+        
         animation = new Timeline();
         animation.getKeyFrames().addAll(
                 new KeyFrame(Duration.ZERO,
@@ -104,7 +139,7 @@ public class Cube3D extends Application {
                 ));
         animation.setCycleCount(Animation.INDEFINITE);
 
-        return new Group(c,c2,c3);
+        return new Group(c,c2,c3,box3);
     }
 
     public void play() {

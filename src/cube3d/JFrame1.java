@@ -43,6 +43,7 @@ public class JFrame1 extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocation(new java.awt.Point(300, 300));
 
         jToggleButton1.setText("jToggleButton1");
 
